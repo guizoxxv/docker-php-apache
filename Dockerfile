@@ -2,8 +2,8 @@ FROM php:7.2.10-apache-stretch
 
 RUN apt update
 
-# Required for zip; php zip extension; png; node; vim; postgres; gd; gd;
-RUN apt install -y zip zlib1g-dev libpng-dev gnupg vim libpq-dev libfreetype6-dev libjpeg62-turbo-dev cron
+# Required for zip; php zip extension; png; node; vim; gd; gd; cron;
+RUN apt install -y zip zlib1g-dev libpng-dev gnupg vim libfreetype6-dev libjpeg62-turbo-dev cron
 
 # PHP extensions - pdo; mysql; zip (used to download packages with Composer); mbstring;
 RUN docker-php-ext-install pdo_mysql zip mbstring
@@ -28,8 +28,8 @@ RUN sed -ri -e 's!APACHE_DOCUMENT_ROOT!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/s
 # Copy start stript into container
 COPY start.sh /usr/local/bin/start
 
-# Set apache folder permission
-RUN chown -R www-data:www-data /var/www/html
+# Set apache root permission
+RUN chown -R www-data:www-data ${APACHE_DOCUMENT_ROOT}
 
 # Activate Apache mod_rewrite
 RUN a2enmod rewrite
