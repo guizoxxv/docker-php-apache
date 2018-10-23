@@ -1,5 +1,7 @@
 FROM php:7.2-apache
 
+ENV APACHE_DOCUMENT_ROOT ${APACHE_DOCUMENT_ROOT:-/var/www/html}
+
 RUN apt update
 
 # Required for zip; php zip extension; png; node; vim; gd; gd;
