@@ -18,8 +18,8 @@ RUN docker-php-ext-install -j$(nproc) gd
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install nodejs (comes with npm)
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash
-RUN apt install -y nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
 
 # Copy custom apache virtual host configuration into container
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
