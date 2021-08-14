@@ -1,18 +1,18 @@
-FROM php:7.2-apache
+FROM php:8-apache
 
 ENV APACHE_DOCUMENT_ROOT ${APACHE_DOCUMENT_ROOT:-/var/www/html}
 
-RUN apt update
+RUN apt-get update
 
-# Required for zip; php zip extension; png; node; vim; gd; gd; postgres
-RUN apt install -y zip zlib1g-dev libpng-dev gnupg vim libfreetype6-dev libjpeg62-turbo-dev libpq-dev
+# Required for zip; php zip extension; png; node; vim; gd; gd; postgres; php mbstring extension
+RUN apt-get install -y zip libzip-dev libpng-dev gnupg vim libfreetype6-dev libjpeg62-turbo-dev libpq-dev libonig-dev
 
 # PHP extensions - pdo-mysql; mysqli; postgres; zip (used to download packages with Composer); mbstring;
 RUN docker-php-ext-install pdo_mysql mysqli pdo_pgsql zip mbstring
 
 # GD (Image library)
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
-RUN docker-php-ext-install -j$(nproc) gd
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install gd
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
